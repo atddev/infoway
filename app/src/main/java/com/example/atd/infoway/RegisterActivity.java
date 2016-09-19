@@ -60,15 +60,27 @@ public class RegisterActivity extends AppCompatActivity {
         String password2 = Password2View.getText().toString();
         String fname = fnameView.getText().toString();
         String lname = lnameView.getText().toString();
-        int age = Integer.parseInt(String.valueOf(ageView.getText()));
+
+
 
         int buttonId = radioGender.getCheckedRadioButtonId();
         RadioButton genderButton = (RadioButton) findViewById(buttonId);
         String gender = genderButton.getText().toString();
 
-
+        int age = 0;
         boolean cancel = false;
         View focusView = null;
+
+        // check if age is valid
+        if (TextUtils.isEmpty(ageView.getText().toString()) || Integer.parseInt(String.valueOf(ageView.getText())) < 1 || Integer.parseInt(String.valueOf(ageView.getText())) > 100) {
+            ageView.setError(getString(R.string.error_invalid_age));
+            focusView = ageView;
+            cancel = true;
+        }
+        else {
+             age = Integer.parseInt(String.valueOf(ageView.getText()));
+        }
+
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password1) && !isPasswordValid(password1)) {
@@ -118,6 +130,8 @@ public class RegisterActivity extends AppCompatActivity {
             databaseHelper.addUser(user, password1.hashCode(), fname, lname, gender, age);
 
             Intent intent = new Intent(this, LoginActivity.class);
+            // Kill this activity and launch success activity
+            finish();
             startActivity(intent);
             // mAuthTask.execute((Void) null);
         }

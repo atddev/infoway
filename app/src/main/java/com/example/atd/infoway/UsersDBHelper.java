@@ -65,7 +65,7 @@ public class UsersDBHelper extends SQLiteOpenHelper {
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
                 KEY_ITEM_USER_ID_FK + " INTEGER REFERENCES " + TABLE_USERS + "," + // Define a foreign key
                 KEY_ITEM_NAME + " TEXT" +
-                KEY_ITEM_DONE + " INTEGER" +
+                KEY_ITEM_DONE + " INTEGER DEFAULT 0" +
                 ")";
 
         db.execSQL(CREATE_USERS_TABLE);
