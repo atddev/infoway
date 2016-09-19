@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Infoway</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_usernme">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_pass_conf">Confirm Password</string>
+    <string name="prompt_first_name">First Name</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_age">Age</string>
+    <string name="prompt_gender">Gender</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_register">Register</string>
+    <string name="error_invalid_usernme">This Username is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_match_password">Password entered do not match</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="facebook_app_id">687431504740375</string>
+    <string name="fb_login_protocol_scheme">fb687431504740375</string>
+</resources>

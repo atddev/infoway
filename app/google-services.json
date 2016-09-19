@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "728721333236",
+    "project_id": "firebase-infoway"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728721333236:android:f279ec4968adde80",
+        "android_client_info": {
+          "package_name": "com.example.atd.infoway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728721333236-460r23858gu3dfocs43dv82ibk90drl5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.atd.infoway",
+            "certificate_hash": "322BD24C1A452106CBDCFBE4B9F4A7572FE21367"
+          }
+        },
+        {
+          "client_id": "728721333236-jg46b3mf2vsvhh1lkqa7tcf2e309788i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqMAUs7h9tZxVnnY3xq5bzo909mpbd4YY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
