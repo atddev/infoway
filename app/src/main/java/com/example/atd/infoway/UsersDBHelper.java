@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+
 /**
  * Created by atd on 9/13/2016.
  */
@@ -34,8 +35,12 @@ public class UsersDBHelper extends SQLiteOpenHelper {
     private static final String KEY_ITEM_ID = "id";
     private static final String KEY_ITEM_USER_ID_FK = "userId";
     private static final String KEY_ITEM_NAME = "itemName";
+    private static final String KEY_ITEM_PIC = "itemPic";
     // Item status is boolean, 0 = false, 1= true
     private static final Integer KEY_ITEM_DONE = 0;
+
+    // create a new user
+    User NewUser = User.getInstance();
 
     /**
      * Constructor should be private to prevent direct instantiation.
@@ -65,6 +70,7 @@ public class UsersDBHelper extends SQLiteOpenHelper {
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
                 KEY_ITEM_USER_ID_FK + " INTEGER REFERENCES " + TABLE_USERS + "," + // Define a foreign key
                 KEY_ITEM_NAME + " TEXT" +
+                KEY_ITEM_PIC + " TEXT" +
                 KEY_ITEM_DONE + " INTEGER DEFAULT 0" +
                 ")";
 
@@ -111,12 +117,12 @@ public class UsersDBHelper extends SQLiteOpenHelper {
         try {
 
             ContentValues values = new ContentValues();
-            values.put(KEY_USER_USERNAME, user.username);
-            values.put(KEY_USER_PASSWORD, user.password.hashCode());
-            values.put(KEY_USER_FIRST_NAME, user.fname);
-            values.put(KEY_USER_LAST_NAME, user.lname);
-            values.put(KEY_USER_GENDER, user.gender);
-            values.put(KEY_USER_AGE, user.age);
+            values.put(KEY_USER_USERNAME, NewUser.getUsername());
+            values.put(KEY_USER_PASSWORD, user.getPassword().hashCode());
+            values.put(KEY_USER_FIRST_NAME, user.getFirstName());
+            values.put(KEY_USER_LAST_NAME, user.getLastName());
+            values.put(KEY_USER_GENDER, user.getGender());
+            values.put(KEY_USER_AGE, user.getAge());
 
             db.insertOrThrow(TABLE_USERS, null, values);
             db.setTransactionSuccessful();
@@ -175,6 +181,51 @@ public class UsersDBHelper extends SQLiteOpenHelper {
             return 0;
         }
     }
+
+
+    //this method takes username and sets gloabel user attribatues
+    public void setUser(String usern) {
+        String[] projection = {
+                KEY_USER_ID,
+                KEY_USER_USERNAME,
+                KEY_USER_PASSWORD,
+                KEY_USER_FIRST_NAME,
+                KEY_USER_LAST_NAME,
+                KEY_USER_GENDER,
+                KEY_USER_AGE,
+        };
+
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String selection = KEY_USER_USERNAME + " = ?";
+        String[] selectionArgs = {usern};
+
+
+        Cursor c = db.query(
+                TABLE_USERS,                              // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                      // don't The sort order
+        );
+
+        if (c != null && c.moveToFirst()) {
+            NewUser.setUsername(c.getString(c.getColumnIndex(KEY_USER_USERNAME)));
+            NewUser.setFirstName(c.getString(c.getColumnIndex(KEY_USER_FIRST_NAME)));
+            NewUser.setLastName(c.getString(c.getColumnIndex(KEY_USER_LAST_NAME)));
+            NewUser.setGender(c.getString(c.getColumnIndex(KEY_USER_GENDER)));
+            NewUser.setAge(c.getInt(c.getColumnIndex(KEY_USER_AGE)));
+            c.close();
+        } else {
+            c.close();
+        }
+
+    }
+    // Add new item
+
 
 
 }

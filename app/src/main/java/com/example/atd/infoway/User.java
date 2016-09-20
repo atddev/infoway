@@ -5,10 +5,64 @@ package com.example.atd.infoway;
  */
 
 public class User {
-    public String username;
-    public String password;
-    public String fname;
-    public String lname;
-    public String gender;
-    public int age;
+
+    private static User instance;
+
+    private User() {}
+
+    public static User getInstance() {
+        if (instance == null) {
+            instance = new User();
+        }
+        return instance;
+    }
+    private String username;
+    private String password;
+    private String fname;
+    private String lname;
+    private String gender;
+    private int age;
+
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return fname;
+    }
+    public void setFirstName(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLastName() {
+        return lname;
+    }
+    public void setLastName(String lname) {
+        this.lname = lname;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+    public void setAge(int age) {
+        this.age = age;
+    }
+
 }

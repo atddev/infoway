@@ -7,5 +7,6 @@ package com.example.atd.infoway;
 public class Item {
     public User user;
     public String name;
+    public String pic;
     public int done;
 }

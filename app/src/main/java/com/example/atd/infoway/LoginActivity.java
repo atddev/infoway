@@ -76,10 +76,11 @@ public class LoginActivity extends AppCompatActivity implements
     private View mLoginFormView;
     Intent intentr, intents;
     String user, password;
-    //    UsersDBHelper databaseHelper;
+    UsersDBHelper databaseHelper;
     private TwitterLoginButton loginButton;
     private LoginButton floginButton;
     private CallbackManager callbackManager;
+    public static User CurrentUser;
 
 
     @Override
@@ -98,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                  //  attemptLogin();
                     return true;
                 }
                 return false;
@@ -414,24 +415,24 @@ public class LoginActivity extends AppCompatActivity implements
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
+/*
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
             }
-
+*/
             // get the Key-Value Sets (username, password)
             // int savedPass = sharedPref.getInt(user, '0');
-            Log.wtf("WTF:", "User Login task called, user: " + user + " pass: " + password);
-
             // Get singleton instance of database
-            UsersDBHelper databaseHelper = UsersDBHelper.getInstance(getApplicationContext());
+             databaseHelper = UsersDBHelper.getInstance(getApplicationContext());
             int savedPass = databaseHelper.getPassHash(user);
             // compare user password's hash to saved hash
             // in a production code this should be secure hash function (ex. SHA 512)
             if (savedPass == password.hashCode()) {
+                // set the user global info
+                databaseHelper.setUser(user);
                 return true;
             } else {
                 return false;
@@ -447,6 +448,8 @@ public class LoginActivity extends AppCompatActivity implements
             if (success) {
                 finish();
                 startActivity(intents);
+
+
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

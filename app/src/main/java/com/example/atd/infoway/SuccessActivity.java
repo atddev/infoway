@@ -2,6 +2,7 @@ package com.example.atd.infoway;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -23,11 +24,12 @@ public class SuccessActivity extends FragmentActivity {
 
     CustomPagerAdapter mCustomPagerAdapter;
     ViewPager mViewPager;
-
+    String user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_success);
+
 
         mCustomPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager(), this.getApplicationContext());
 
@@ -47,20 +49,26 @@ public class SuccessActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
 
-            // Create fragment object
-            Fragment fragment = new DemoFragment();
+            if (position == 1){
+                Fragment fragment = new AddItemFrag();
+                return fragment;
+            }
+            else {
+                // Create fragment object
+                Fragment fragment = new DemoFragment();
 
-            // Attach some data to the fragment
-            // that we'll use to populate our fragment layouts
-            Bundle args = new Bundle();
-            args.putInt("page_position", position + 1);
+                // Attach some data to the fragment
+                // that we'll use to populate our fragment layouts
+                Bundle args = new Bundle();
+                args.putInt("page_position", position + 1);
 
-            // Set the arguments on the fragment
-            // that will be fetched in the
-            // DemoFragment@onCreateView
-            fragment.setArguments(args);
+                // Set the arguments on the fragment
+                // that will be fetched in the
+                // DemoFragment@onCreateView
+                fragment.setArguments(args);
 
-            return fragment;
+                return fragment;
+            } // end else
         }
 
 

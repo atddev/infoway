@@ -55,24 +55,22 @@ public class RegisterActivity extends AppCompatActivity {
         Password2View.setError(null);
 
         // create a new user
-        User NewUser = new User();
-
-
+        User NewUser = User.getInstance();
         // Store values at the time of the login attempt.
-        NewUser.username = mUsernameView.getText().toString();
-        NewUser.password = Password1View.getText().toString();
+        NewUser.setUsername(mUsernameView.getText().toString());
+        NewUser.setPassword(Password1View.getText().toString());
         String password2 = Password2View.getText().toString();
 
-        NewUser.fname = fnameView.getText().toString();
-        NewUser.lname = lnameView.getText().toString();
+        NewUser.setFirstName(fnameView.getText().toString());
+        NewUser.setLastName(lnameView.getText().toString());
 
 
 
         int buttonId = radioGender.getCheckedRadioButtonId();
         RadioButton genderButton = (RadioButton) findViewById(buttonId);
-        NewUser.gender = genderButton.getText().toString();
+        NewUser.setGender(genderButton.getText().toString());
 
-        NewUser.age = 0;
+        NewUser.setAge(0);
         boolean cancel = false;
         View focusView = null;
 
@@ -83,25 +81,25 @@ public class RegisterActivity extends AppCompatActivity {
             cancel = true;
         }
         else {
-             NewUser.age = Integer.parseInt(String.valueOf(ageView.getText()));
+             NewUser.setAge(Integer.parseInt(String.valueOf(ageView.getText())));
         }
 
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(NewUser.password) && !isPasswordValid(NewUser.password)) {
+        if (!TextUtils.isEmpty(NewUser.getPassword()) && !isPasswordValid(NewUser.getPassword())) {
             Password1View.setError(getString(R.string.error_invalid_password));
             focusView = Password1View;
             cancel = true;
         }
         // Check for matching passwords
-        if (!NewUser.password.equals(password2)) {
+        if (!NewUser.getPassword().equals(password2)) {
             Password1View.setError(getString(R.string.error_match_password));
             focusView = Password1View;
             cancel = true;
         }
 
         // Check for a valid user address.
-        if (TextUtils.isEmpty(NewUser.username)) {
+        if (TextUtils.isEmpty(NewUser.getUsername())) {
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
