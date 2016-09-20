@@ -101,7 +101,8 @@ public class UsersDBHelper extends SQLiteOpenHelper {
     }
 
     // Insert a new user into the database
-    public void addUser(String uname, int pass, String fname, String lname, String gend, int age) {
+    public void addUser(User user) {
+
         // Create and/or open the database for writing
         SQLiteDatabase db = getWritableDatabase();
 
@@ -110,12 +111,12 @@ public class UsersDBHelper extends SQLiteOpenHelper {
         try {
 
             ContentValues values = new ContentValues();
-            values.put(KEY_USER_USERNAME, uname);
-            values.put(KEY_USER_PASSWORD, pass);
-            values.put(KEY_USER_FIRST_NAME, fname);
-            values.put(KEY_USER_LAST_NAME, lname);
-            values.put(KEY_USER_GENDER, gend);
-            values.put(KEY_USER_AGE, age);
+            values.put(KEY_USER_USERNAME, user.username);
+            values.put(KEY_USER_PASSWORD, user.password.hashCode());
+            values.put(KEY_USER_FIRST_NAME, user.fname);
+            values.put(KEY_USER_LAST_NAME, user.lname);
+            values.put(KEY_USER_GENDER, user.gender);
+            values.put(KEY_USER_AGE, user.age);
 
             db.insertOrThrow(TABLE_USERS, null, values);
             db.setTransactionSuccessful();

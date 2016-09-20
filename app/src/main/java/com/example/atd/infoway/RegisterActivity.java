@@ -54,20 +54,25 @@ public class RegisterActivity extends AppCompatActivity {
         Password1View.setError(null);
         Password2View.setError(null);
 
+        // create a new user
+        User NewUser = new User();
+
+
         // Store values at the time of the login attempt.
-        String user = mUsernameView.getText().toString();
-        String password1 = Password1View.getText().toString();
+        NewUser.username = mUsernameView.getText().toString();
+        NewUser.password = Password1View.getText().toString();
         String password2 = Password2View.getText().toString();
-        String fname = fnameView.getText().toString();
-        String lname = lnameView.getText().toString();
+
+        NewUser.fname = fnameView.getText().toString();
+        NewUser.lname = lnameView.getText().toString();
 
 
 
         int buttonId = radioGender.getCheckedRadioButtonId();
         RadioButton genderButton = (RadioButton) findViewById(buttonId);
-        String gender = genderButton.getText().toString();
+        NewUser.gender = genderButton.getText().toString();
 
-        int age = 0;
+        NewUser.age = 0;
         boolean cancel = false;
         View focusView = null;
 
@@ -78,29 +83,28 @@ public class RegisterActivity extends AppCompatActivity {
             cancel = true;
         }
         else {
-             age = Integer.parseInt(String.valueOf(ageView.getText()));
+             NewUser.age = Integer.parseInt(String.valueOf(ageView.getText()));
         }
 
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password1) && !isPasswordValid(password1)) {
+        if (!TextUtils.isEmpty(NewUser.password) && !isPasswordValid(NewUser.password)) {
             Password1View.setError(getString(R.string.error_invalid_password));
             focusView = Password1View;
             cancel = true;
         }
         // Check for matching passwords
-        if (!password1.equals(password2)) {
+        if (!NewUser.password.equals(password2)) {
             Password1View.setError(getString(R.string.error_match_password));
             focusView = Password1View;
             cancel = true;
         }
 
         // Check for a valid user address.
-        if (TextUtils.isEmpty(user)) {
+        if (TextUtils.isEmpty(NewUser.username)) {
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
-        } else if (!isuserValid(user)) {
             mUsernameView.setError(getString(R.string.error_invalid_usernme));
             focusView = mUsernameView;
             cancel = true;
@@ -127,7 +131,8 @@ public class RegisterActivity extends AppCompatActivity {
             UsersDBHelper databaseHelper = UsersDBHelper.getInstance(this);
 
             // Add sample post to the database
-            databaseHelper.addUser(user, password1.hashCode(), fname, lname, gender, age);
+            databaseHelper.addUser(NewUser);
+          //  databaseHelper.addUser(user, password1.hashCode(), fname, lname, gender, age);
 
             Intent intent = new Intent(this, LoginActivity.class);
             // Kill this activity and launch success activity
