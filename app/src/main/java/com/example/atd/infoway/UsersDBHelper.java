@@ -255,7 +255,7 @@ public class UsersDBHelper extends SQLiteOpenHelper {
 
     // Get all posts in the database
     public List<Item> getUserItems(User user) {
-        List<Item> posts = new ArrayList<>();
+        List<Item> items = new ArrayList<>();
 Log.d("CALLED", "GET all  items called");
         // SELECT * FROM POSTS
         // LEFT OUTER JOIN USERS
@@ -274,7 +274,10 @@ Log.d("CALLED", "GET all  items called");
             if (cursor.moveToFirst()) {
                 do {
                     Log.d("TAG", "Item Name: " + cursor.getString(cursor.getColumnIndex(KEY_ITEM_NAME)) + "\nUsr ID: " + cursor.getString(cursor.getColumnIndex(KEY_ITEM_USER_ID_FK)) +"\nItem Pic: " + cursor.getString(cursor.getColumnIndex(KEY_ITEM_PIC)));
-
+                    Item newItem = new Item();
+                    newItem.name = cursor.getString(cursor.getColumnIndex(KEY_ITEM_NAME));
+                    newItem.pic =  cursor.getString(cursor.getColumnIndex(KEY_ITEM_PIC));
+                    items.add(newItem);
 
                 } while(cursor.moveToNext());
             }
@@ -285,7 +288,7 @@ Log.d("CALLED", "GET all  items called");
                 cursor.close();
             }
         }
-        return posts;
+        return items;
     }
 
 

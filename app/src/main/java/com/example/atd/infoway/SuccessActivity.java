@@ -51,7 +51,12 @@ public class SuccessActivity extends FragmentActivity {
 
             if (position == 1){
                 Fragment fragment = new AddItemFrag();
+
                 return fragment;
+            }
+            if (position == 2){
+                Fragment fragmentt = new PendingFrag();
+                return fragmentt;
             }
             else {
                 // Create fragment object

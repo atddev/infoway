@@ -9,4 +9,16 @@ public class Item {
     public String name;
     public String pic;
     public int done;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public int getDone() {
+        return done;
+    }
 }
