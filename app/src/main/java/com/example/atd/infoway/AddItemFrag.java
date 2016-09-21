@@ -26,7 +26,7 @@ import static android.app.Activity.RESULT_OK;
 
     public class AddItemFrag extends Fragment {
     EditText ItemnameView;
-    Button TakePicBut, AddBut;
+    Button TakePicBut, AddBut, res;
     ImageView image;
     Item item;
 
@@ -53,15 +53,25 @@ import static android.app.Activity.RESULT_OK;
         text.setText("Username" + NewUser.getUsername()+ " userF " +NewUser.getFirstName() +" userL " +NewUser.getLastName() +" userGender " +NewUser.getGender());
             // create a new item object
             item = new Item();
-            // set item name
-            item.name = ItemnameView.getText().toString();
+        item.user = User.getInstance();
+
+
+        res = (Button) rootView.findViewById(R.id.res);
+        // Take a picture button
+        res.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UsersDBHelper.getInstance(getActivity()).getUserItems(item.user);
+
+            }
+        });
 
 
         // Take a picture button
         TakePicBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                UsersDBHelper.getInstance(getActivity()).getUserItems(item.user);
                dispatchTakePictureIntent();
             }
         });
@@ -71,7 +81,15 @@ import static android.app.Activity.RESULT_OK;
             @Override
             public void onClick(View view) {
 
+                // set item name
+                item.name = ItemnameView.getText().toString();
+
+
                // dispatchTakePictureIntent();
+                // call database add item
+                // Get singleton instance of database
+                UsersDBHelper.getInstance(getActivity()).addItem(item);
+
             }
         });
 

@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by atd on 9/13/2016.
@@ -37,7 +40,7 @@ public class UsersDBHelper extends SQLiteOpenHelper {
     private static final String KEY_ITEM_NAME = "itemName";
     private static final String KEY_ITEM_PIC = "itemPic";
     // Item status is boolean, 0 = false, 1= true
-    private static final Integer KEY_ITEM_DONE = 0;
+    private static final String KEY_ITEM_DONE = "itemDone";
 
     // create a new user
     User NewUser = User.getInstance();
@@ -69,10 +72,9 @@ public class UsersDBHelper extends SQLiteOpenHelper {
                 "(" +
                 KEY_ITEM_ID + " INTEGER PRIMARY KEY," + // Define a primary key
                 KEY_ITEM_USER_ID_FK + " INTEGER REFERENCES " + TABLE_USERS + "," + // Define a foreign key
-                KEY_ITEM_NAME + " TEXT" +
-                KEY_ITEM_PIC + " TEXT" +
-                KEY_ITEM_DONE + " INTEGER DEFAULT 0" +
-                ")";
+                KEY_ITEM_NAME + " TEXT," +
+                KEY_ITEM_PIC + " TEXT," +
+                KEY_ITEM_DONE + " INTEGER DEFAULT 0);";
 
         db.execSQL(CREATE_USERS_TABLE);
         db.execSQL(CREATE_ITEMS_TABLE);
@@ -213,6 +215,7 @@ public class UsersDBHelper extends SQLiteOpenHelper {
         );
 
         if (c != null && c.moveToFirst()) {
+            NewUser.setUserID(c.getInt(c.getColumnIndex(KEY_USER_ID)));
             NewUser.setUsername(c.getString(c.getColumnIndex(KEY_USER_USERNAME)));
             NewUser.setFirstName(c.getString(c.getColumnIndex(KEY_USER_FIRST_NAME)));
             NewUser.setLastName(c.getString(c.getColumnIndex(KEY_USER_LAST_NAME)));
@@ -225,6 +228,66 @@ public class UsersDBHelper extends SQLiteOpenHelper {
 
     }
     // Add new item
+    // Insert a post into the database
+    public void addItem(Item item) {
+        // Create and/or open the database for writing
+        SQLiteDatabase db = getWritableDatabase();
+
+        // It's a good idea to wrap our insert in a transaction. This helps with performance and ensures
+        // consistency of the database.
+        db.beginTransaction();
+        try {
+
+            ContentValues values = new ContentValues();
+            values.put(KEY_ITEM_NAME, item.name);
+            values.put(KEY_ITEM_USER_ID_FK, item.user.getUserID());
+            values.put(KEY_ITEM_PIC, item.pic);
+
+            // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
+            db.insertOrThrow(TABLE_ITEMS, null, values);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            // something wrong happened
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    // Get all posts in the database
+    public List<Item> getUserItems(User user) {
+        List<Item> posts = new ArrayList<>();
+Log.d("CALLED", "GET all  items called");
+        // SELECT * FROM POSTS
+        // LEFT OUTER JOIN USERS
+        // ON POSTS.KEY_POST_USER_ID_FK = USERS.KEY_USER_ID
+        String POSTS_SELECT_QUERY =
+                String.format("SELECT * FROM %s WHERE %s = %s",
+                        TABLE_ITEMS,
+                        KEY_ITEM_USER_ID_FK,
+                        user.getUserID());
+
+        // "getReadableDatabase()" and "getWriteableDatabase()" return the same object (except under low
+        // disk space scenarios)
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(POSTS_SELECT_QUERY, null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Log.d("TAG", "Item Name: " + cursor.getString(cursor.getColumnIndex(KEY_ITEM_NAME)) + "\nUsr ID: " + cursor.getString(cursor.getColumnIndex(KEY_ITEM_USER_ID_FK)) +"\nItem Pic: " + cursor.getString(cursor.getColumnIndex(KEY_ITEM_PIC)));
+
+
+                } while(cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d("TAG", "Error while trying to get posts from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return posts;
+    }
+
 
 
 

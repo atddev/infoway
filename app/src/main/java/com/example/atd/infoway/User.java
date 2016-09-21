@@ -16,12 +16,20 @@ public class User {
         }
         return instance;
     }
+    private  int userID;
     private String username;
     private String password;
     private String fname;
     private String lname;
     private String gender;
     private int age;
+
+    public int getUserID() {
+        return userID;
+    }
+    public void setUserID(int userId) {
+        this.userID = userId;
+    }
 
     public String getUsername() {
         return username;
